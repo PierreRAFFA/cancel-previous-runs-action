@@ -11,8 +11,11 @@ The cancellation of the previous runs could be required when:
 - the first entry fails and all the next ones will have to run again  
 This result in multiple runs executed for the same PR queued.  
 
+## Requirements
+- gh (comes natively with Github-hosted runners)
+- jq
 
-## Usage 
+## Usage  
 
 Place this job at the beginning of your workflow.  
 Once the job running, it will check for all runs related to the same PR than the current run and cancel all of them.  
