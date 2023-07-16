@@ -1,0 +1,19 @@
+name: 'Cancel Previous Runs Action'
+description: 'Cancels any previous runs that are `in_progress` for a given workflow. (for merge_group event only at the moment)'
+branding:
+  icon: 'stop-circle'
+  color: 'white'
+inputs:
+  github_token:
+    description: 'Your GitHub Token, (Default: {{ github.token }} )'
+    default: ${{ github.token }}
+    required: false
+runs:
+  using: composite
+  steps:
+  - name: Cancel
+    shell: bash
+    env:
+      GH_TOKEN: ${{ inputs.github_token }}
+    run: |
+      ./.github/actions/cancel-previous-runs-action/cancel.sh
