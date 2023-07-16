@@ -1,4 +1,4 @@
-name: Sleep120
+name: Test
 
 on:
   pull_request:
