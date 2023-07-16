@@ -6,11 +6,24 @@ It supports 3 events:
 - push  
 - merge_group  
 
-For `merge_group` event:  
+For `pull_request` and `push` event: 
+Cancellation is performed for previous runs:
+- which are `in_progress` state
+- from the same workflow
+- from the same branch
+- older than the current run
+
+For `merge_group` event:   
+Cancellation is performed for previous runs:
+- which are `in_progress` state
+- from the same workflow
+- related the same PR 
+- older than the current run
+
 The cancellation of the previous runs could be required when:
 - the merge queue has entries running concurrently  
 - the first entry fails and all the next ones will have to run again  
-This result in multiple runs executed for the same PR queued.  
+This result in multiple runs executed for the same queued PR.  
 
 ## Requirements
 - gh (comes natively with Github-hosted runners) + write permissions to setup in the repo settings
