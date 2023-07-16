@@ -41,24 +41,28 @@ if [ "$event" = "merge_group" ]; then
           | select(.databaseId != '"${current_run_id}"')
           | select(.createdAt < "'${current_run_created_at}'"))')
 
-elif [ "$event" = "pull_request" ]; then
+elif [ "$event" == "pull_request" ] || [ "$event" == "push" ]; then
   ###########################
-  ## event: pull_request
+  ## event: pull_request / push
   ###########################
+
   # Specifies the ref branch which is the temporary branch created by Gh and formatted such as `gh-readonly-queue/main/pr-{num}-{sha}`
-  ref=$GITHUB_HEAD_REF
+  if [ "$event" = "pull_request" ]; then
+    ref=$GITHUB_HEAD_REF
+  elif [ "$event" = "push" ]; then
+    ref=$GITHUB_REF
+  fi
 
   # Prints
   echo "workflow:                 $workflow"
   echo "ref:                      $ref"
   echo "current_run_id:           $current_run_id"
   echo "current_run_created_at:   $current_run_created_at"
-  printenv | grep GITHUB 
 
   # Returns the list of runs which respect all the following conditions:
-  #   - event is merge_group
+  #   - event is pull_request / push
   #   - worflow is the one specified
-  #   - the run is related to the same pr number than the current run
+  #   - the run is related to the same ref than the current run
   #   - the run is in progress
   #   - the run is NOT the current one
   #   - the run is created before the current one
@@ -69,12 +73,6 @@ elif [ "$event" = "pull_request" ]; then
           | select(.status == "in_progress")
           | select(.databaseId != '"${current_run_id}"')
           | select(.createdAt < "'${current_run_created_at}'"))')
-
-elif [ "$event" = "push" ]; then
-  ###########################
-  ## event: push
-  ###########################
-  printenv | grep GITHUB
 fi
 
 echo "Runs for cancellation: $runs"
