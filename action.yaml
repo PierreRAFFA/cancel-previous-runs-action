@@ -1,5 +1,5 @@
 name: 'Cancel Previous Runs Action'
-description: 'Cancels any previous runs that are `in_progress` for a given workflow. (for merge_group event only at the moment)'
+description: 'Cancels any previous runs that are `in_progress` or `queued` state for the current workflow'
 branding:
   icon: 'stop-circle'
   color: 'white'
