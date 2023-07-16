@@ -9,7 +9,7 @@ current_run_id=$GITHUB_RUN_ID
 # Get current run `createdAt`
 current_run_created_at=$(gh run view $current_run_id --json createdAt --jq '.[]')
 
-if [ "$event" = "merge_group" ]; then
+if [ "$event" == "merge_group" ]; then
   ###########################
   ## event: merge_group
   ###########################
@@ -21,6 +21,7 @@ if [ "$event" = "merge_group" ]; then
 
   # Prints
   echo "workflow:                 $workflow"
+  echo "event:                    $event"
   echo "ref:                      $ref"
   echo "current_run_id:           $current_run_id"
   echo "pr_identifier:            $pr_identifier"
@@ -47,14 +48,15 @@ elif [ "$event" == "pull_request" ] || [ "$event" == "push" ]; then
   ###########################
 
   # Specifies the ref branch which is the temporary branch created by Gh and formatted such as `gh-readonly-queue/main/pr-{num}-{sha}`
-  if [ "$event" = "pull_request" ]; then
+  if [ "$event" == "pull_request" ]; then
     ref=$GITHUB_HEAD_REF
-  elif [ "$event" = "push" ]; then
-    ref=$GITHUB_REF
+  elif [ "$event" == "push" ]; then
+    ref=$GITHUB_REF_NAME
   fi
 
   # Prints
   echo "workflow:                 $workflow"
+  echo "event:                    $event"
   echo "ref:                      $ref"
   echo "current_run_id:           $current_run_id"
   echo "current_run_created_at:   $current_run_created_at"
