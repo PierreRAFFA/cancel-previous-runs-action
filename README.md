@@ -24,5 +24,5 @@ jobs:
     if: github.event_name == 'merge_group'
     steps:
       - name: Cancel Previous Runs
-        uses: ./.github/actions/cancel-run-action
+        uses: pierreraffa/cancel-previous-runs-action
 ```
