@@ -6,6 +6,12 @@ It supports 3 events:
 - push  
 - merge_group  
 
+## Requirements
+- gh (comes natively with Github-hosted runners) + write permissions to setup in the repo settings
+- jq
+
+## Event Handlers
+
 For `pull_request` and `push` events, the cancellation is performed for previous runs:  
 - which are `in_progress` state
 - from the same workflow
@@ -23,12 +29,7 @@ The cancellation of the previous runs could be required when:
 - the first entry fails and all the next ones will have to run again  
 This result in multiple runs executed for the same queued PR.  
 
-## Requirements
-- gh (comes natively with Github-hosted runners) + write permissions to setup in the repo settings
-- jq
-
 ## Usage 
-
 Place this job at the beginning of your workflow.  
 Once the job running, it will check for all runs related to the same context than the current run and cancel all of them.  
 
