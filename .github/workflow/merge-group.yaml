@@ -1,0 +1,24 @@
+name: Sleep120
+
+on:
+  merge_group:
+    types:
+    - checks_requested
+    branches:
+    - main
+
+jobs:
+
+  cancel-previous-runs:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'merge_group'
+    steps:
+      - name: Cancel Previous Runs
+        uses: pierreraffa/cancel-previous-runs-action
+
+  test:
+    runs-on: ubuntu-latest
+    name: Test
+    steps:
+      - uses: actions/checkout
+      - run: sleep 180s
