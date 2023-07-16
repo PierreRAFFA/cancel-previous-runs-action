@@ -12,7 +12,7 @@ The cancellation of the previous runs could be required when:
 This result in multiple runs executed for the same PR queued.  
 
 ## Requirements
-- gh (comes natively with Github-hosted runners)
+- gh (comes natively with Github-hosted runners) + write permissions to setup in the repo settings
 - jq
 
 ## Usage  
