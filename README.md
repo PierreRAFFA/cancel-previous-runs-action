@@ -1,4 +1,5 @@
-# Cancel Previous Runs Action (merge_group event only at the moment)
+# Cancel Previous Runs Action 
+#### (merge_group event only at the moment)
 
 This GitHub action is responsible to cancel any previous runs for the current workflow that are:  
 - triggered by `merge_group` event  
