@@ -1,9 +1,15 @@
 name: Sleep120
 
 on:
+  pull_request:
+    branches:
+    - main
   merge_group:
     types:
     - checks_requested
+    branches:
+    - main
+  push:
     branches:
     - main
 
@@ -11,7 +17,6 @@ jobs:
 
   cancel-previous-runs:
     runs-on: ubuntu-latest
-    if: github.event_name == 'merge_group'
     steps:
       - name: Cancel Previous Runs
         uses: pierreraffa/cancel-previous-runs-action
