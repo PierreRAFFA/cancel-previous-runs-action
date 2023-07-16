@@ -6,15 +6,13 @@ It supports 3 events:
 - push  
 - merge_group  
 
-For `pull_request` and `push` event: 
-Cancellation is performed for previous runs:
+For `pull_request` and `push` events, the cancellation is performed for previous runs:  
 - which are `in_progress` state
 - from the same workflow
 - from the same branch
 - older than the current run
 
-For `merge_group` event:   
-Cancellation is performed for previous runs:
+For `merge_group` event, the cancellation is performed for previous runs:  
 - which are `in_progress` state
 - from the same workflow
 - related the same PR 
