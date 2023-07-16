@@ -15,7 +15,7 @@ This result in multiple runs executed for the same PR queued.
 - gh (comes natively with Github-hosted runners) + write permissions to setup in the repo settings
 - jq
 
-## Usage
+## Usage 
 
 Place this job at the beginning of your workflow.  
 Once the job running, it will check for all runs related to the same PR than the current run and cancel all of them.  
