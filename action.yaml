@@ -1,8 +1,8 @@
 name: 'Cancel Previous Runs Action'
-description: 'Cancels any previous runs that are `in_progress` or `queued` state for the current workflow'
+description: 'Cancels any previous runs that are `in_progress` or `queued` state for the current workflow. Supported events: merge_group, pull_request, push'
 branding:
-  icon: 'stop-circle'
-  color: 'white'
+  icon: 'alert-octagon'
+  color: 'green'
 inputs:
   github_token:
     description: 'Your GitHub Token, (Default: {{ github.token }} )'
