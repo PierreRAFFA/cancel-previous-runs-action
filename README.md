@@ -6,7 +6,7 @@ It supports 3 events:
 - push  
 - merge_group  
 
-#### For `merge_group` event:
+For `merge_group` event:  
 The cancellation of the previous runs could be required when:
 - the merge queue has entries running concurrently  
 - the first entry fails and all the next ones will have to run again  
