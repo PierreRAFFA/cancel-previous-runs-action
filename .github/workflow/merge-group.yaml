@@ -21,4 +21,4 @@ jobs:
     name: Test
     steps:
       - uses: actions/checkout
-      - run: sleep 180s
+      - run: sleep 180 && echo "Passed"
