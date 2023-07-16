@@ -27,5 +27,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Cancel Previous Runs
-        uses: pierreraffa/cancel-previous-runs-action
+        uses: pierreraffa/cancel-previous-runs-action@1.1
 ```
