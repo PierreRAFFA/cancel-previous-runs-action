@@ -13,13 +13,13 @@ It supports 3 events:
 ## Event Handlers
 
 For `pull_request` and `push` events, the cancellation is performed for previous runs:  
-- which are `in_progress` state
+- which are `in_progress` or `queued` state
 - from the same workflow
 - from the same branch
 - older than the current run
 
 For `merge_group` event, the cancellation is performed for previous runs:  
-- which are `in_progress` state
+- which are `in_progress` or `queued` state
 - from the same workflow
 - related the same PR 
 - older than the current run
