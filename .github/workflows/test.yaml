@@ -20,7 +20,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Cancel Previous Runs
-        uses: ./.github/actions/cancel-previous-runs-action
+        uses: pierreraffa/cancel-previous-runs-action
 
   test:
     runs-on: ubuntu-latest
