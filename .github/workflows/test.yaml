@@ -21,7 +21,6 @@ jobs:
       - uses: actions/checkout@v3
       - name: Cancel Previous Runs
         uses: ./.github/actions/cancel-previous-runs-action
-        # uses: PierreRAFFA/cancel-previous-runs-action@1.0
 
   test:
     runs-on: ubuntu-latest
