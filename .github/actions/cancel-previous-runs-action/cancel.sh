@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Specifies the repository the runs are executed against
+repository=$GITHUB_REPOSITORY
 # Specifies the workflow to search runs from
 workflow=$GITHUB_WORKFLOW
 # Specifies the event name (pull_request, push, merge_group)
@@ -7,7 +9,14 @@ event=$GITHUB_EVENT_NAME
 # Specifies the current run id we don't want to touch
 current_run_id=$GITHUB_RUN_ID
 # Get current run `createdAt`
-current_run_created_at=$(gh run view $current_run_id --json createdAt --jq '.[]')
+current_run_created_at=$(gh run view $current_run_id --repo $repository --json createdAt --jq '.[]')
+
+# Prints
+echo "repository:               $repository"
+echo "workflow:                 $workflow"
+echo "event:                    $event"
+echo "current_run_id:           $current_run_id"
+echo "current_run_created_at:   $current_run_created_at"
 
 if [ "$event" == "merge_group" ]; then
   ###########################
@@ -18,14 +27,8 @@ if [ "$event" == "merge_group" ]; then
   # extract pr identifier formatted as `pr-{pr}`
   pr_identifier=$(echo $ref | grep -oP 'pr-\d+')
   
-
-  # Prints
-  echo "workflow:                 $workflow"
-  echo "event:                    $event"
   echo "ref:                      $ref"
-  echo "current_run_id:           $current_run_id"
   echo "pr_identifier:            $pr_identifier"
-  echo "current_run_created_at:   $current_run_created_at"
 
   # Returns the list of runs which respect all the following conditions:
   #   - event is merge_group
@@ -34,11 +37,11 @@ if [ "$event" == "merge_group" ]; then
   #   - the run is in progress
   #   - the run is NOT the current one
   #   - the run is created before the current one
-  runs=$(gh run list --workflow $workflow -L 200 \
+  runs=$(gh run list --repo $repository --workflow $workflow -L 200 \
     --json databaseId,workflowName,createdAt,event,status,number,headBranch  \
     --jq 'map(select(.headBranch | contains("'${pr_identifier}'"))
           | select(.event == "'${event}'")
-          | select(.status == "in_progress" or .status == "queued")
+          | select(.status == "in_progress")
           | select(.databaseId != '"${current_run_id}"')
           | select(.createdAt < "'${current_run_created_at}'"))')
 
@@ -55,11 +58,7 @@ elif [ "$event" == "pull_request" ] || [ "$event" == "push" ]; then
   fi
 
   # Prints
-  echo "workflow:                 $workflow"
-  echo "event:                    $event"
   echo "ref:                      $ref"
-  echo "current_run_id:           $current_run_id"
-  echo "current_run_created_at:   $current_run_created_at"
 
   # Returns the list of runs which respect all the following conditions:
   #   - event is pull_request / push
@@ -68,11 +67,11 @@ elif [ "$event" == "pull_request" ] || [ "$event" == "push" ]; then
   #   - the run is in progress
   #   - the run is NOT the current one
   #   - the run is created before the current one
-  runs=$(gh run list --workflow $workflow -L 200 \
+  runs=$(gh run list --repo $repository --workflow $workflow -L 200 \
     --json databaseId,workflowName,createdAt,event,status,number,headBranch \
     --jq 'map(select(.headBranch == "'${ref}'")
           | select(.event == "'${event}'")
-          | select(.status == "in_progress" or .status == "queued")
+          | select(.status == "in_progress")
           | select(.databaseId != '"${current_run_id}"')
           | select(.createdAt < "'${current_run_created_at}'"))')
 fi
@@ -84,4 +83,4 @@ run_ids=$(echo $runs | jq -c '[ .[] | .databaseId ]')
 echo "runs ids for cancellation: $run_ids"
 
 # Cancels the run
-echo $run_ids | jq '.[]' | xargs -I{} bash -c "echo 'Cancelling run {}...' && gh run cancel {} || true"
+echo $run_ids | jq '.[]' | xargs -I{} bash -c "echo 'Cancelling run {}...' && gh run cancel --repo $repository {} || true"

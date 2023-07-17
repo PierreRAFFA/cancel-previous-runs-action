@@ -29,7 +29,7 @@ The cancellation of the previous runs could be required when:
 - the first entry fails and all the next ones will have to run again  
 This result in multiple runs executed for the same queued PR.  
 
-## Usage
+## Usage 
 Place this job at the beginning of your workflow.  
 Once the job running, it will check for all runs related to the same context than the current run and cancel all of them.  
 
@@ -38,7 +38,6 @@ jobs:
   cancel-previous-runs:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3 # gh expects to be executed in your repo, then you first need to check it out
       - name: Cancel Previous Runs
-        uses: pierreraffa/cancel-previous-runs-action@1.3
+        uses: pierreraffa/cancel-previous-runs-action@1.4
 ```
