@@ -38,6 +38,7 @@ jobs:
   cancel-previous-runs:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3 # gh expects to be executed in your repo, then you first need to check it out
       - name: Cancel Previous Runs
         uses: pierreraffa/cancel-previous-runs-action@1.3
 ```
