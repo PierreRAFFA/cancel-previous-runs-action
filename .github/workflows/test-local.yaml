@@ -1,4 +1,4 @@
-name: Test
+name: Test-Local
 
 on:
   pull_request:
@@ -18,10 +18,13 @@ jobs:
   cancel-previous-runs:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
       - name: Cancel Previous Runs
-        uses: pierreraffa/cancel-previous-runs-action@1.4
+        uses: ./.github/actions/cancel-previous-runs-action
+        with:
+          workflow_names: Test,Test-Local
 
-  test:
+  test-local:
     runs-on: ubuntu-latest
     name: Test
     steps:

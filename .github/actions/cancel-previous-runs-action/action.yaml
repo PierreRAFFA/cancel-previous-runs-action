@@ -4,8 +4,13 @@ branding:
   icon: 'stop-circle'
   color: 'white'
 inputs:
+  workflow_names:
+    description: 'Specifies the list of workflow names to stop the runs'
+    type: string
+    required: false
   github_token:
-    description: 'Your GitHub Token, (Default: {{ github.token }} )'
+    description: 'Specifies the GitHub Token, (Default: {{ github.token }} )'
+    type: string
     default: ${{ github.token }}
     required: false
 runs:
@@ -15,5 +20,6 @@ runs:
     shell: bash
     env:
       GH_TOKEN: ${{ inputs.github_token }}
+      WORKFLOW_NAMES: ${{ inputs.workflow_names }}
     run: |
       ./.github/actions/cancel-previous-runs-action/cancel.sh
