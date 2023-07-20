@@ -33,7 +33,7 @@ This result in multiple runs executed for the same queued PR.
 Place this job at the beginning of your workflow.  
 Once the job running, it will check for all runs related to the same context than the current run and cancel all of them.  
 
-Cancel previous runs fron the same workflow:  
+Cancel previous runs from the same workflow:  
 ```yaml
 jobs:
   cancel-previous-runs:
