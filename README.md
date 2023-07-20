@@ -21,7 +21,7 @@ For `pull_request` and `push` events, the cancellation is performed for previous
 For `merge_group` event, the cancellation is performed for previous runs:  
 - which are `in_progress` or `queued` state
 - from the same workflow, or from a given list of workflows or from any workflow
-- related the same PR 
+- related to the same PR 
 - older than the current run
 
 The cancellation of the previous runs could be required when:
