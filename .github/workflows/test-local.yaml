@@ -22,7 +22,7 @@ jobs:
       - name: Cancel Previous Runs
         uses: ./.github/actions/cancel-previous-runs-action
         with:
-          workflow_names: Test,Test-Local
+          workflow_names: '*'
 
   test-local:
     runs-on: ubuntu-latest
