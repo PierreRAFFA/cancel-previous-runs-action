@@ -1,6 +1,6 @@
 # Cancel Previous Runs Action 
 
-This GitHub action is responsible to cancel any previous runs for the current workflow.  
+This GitHub action is responsible to cancel any previous runs for the current workflow or from a given list.
 It supports 3 events:  
 - pull_request  
 - push  
