@@ -33,11 +33,24 @@ This result in multiple runs executed for the same queued PR.
 Place this job at the beginning of your workflow.  
 Once the job running, it will check for all runs related to the same context than the current run and cancel all of them.  
 
+Cancel previous runs fron the same workflow:  
 ```yaml
 jobs:
   cancel-previous-runs:
     runs-on: ubuntu-latest
     steps:
       - name: Cancel Previous Runs
-        uses: pierreraffa/cancel-previous-runs-action@1.4
+        uses: pierreraffa/cancel-previous-runs-action@1.5
+```
+
+Cancel previous runs from a list of workflows:  
+```yaml
+jobs:
+  cancel-previous-runs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cancel Previous Runs
+        uses: pierreraffa/cancel-previous-runs-action@1.5
+        with:
+          workflow_names: Workflow1,Workflow2
 ```
