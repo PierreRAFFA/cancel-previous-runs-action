@@ -17,13 +17,19 @@ if [ -z "$workflow_names" ]; then
   workflow_names=$workflow
 fi
 
-IFS=',' read -ra arr <<< "$workflow_names"
-for w in "${arr[@]}"; do
-  if [ -n "$workflows_jq_selector" ]; then
-    or=" or "
-  fi
-  workflows_jq_selector+=$or'.workflowName == "'$w'"'
-done
+if [ "$workflow_names" == "*" ]; then
+  workflows_jq_selector=""
+else
+  IFS=',' read -ra arr <<< "$workflow_names"
+  for w in "${arr[@]}"; do
+    if [ -n "$workflows_jq_selector" ]; then
+      or=" or "
+    fi
+    workflows_jq_selector+=$or'.workflowName == "'$w'"'
+  done
+  workflows_jq_selector="| select("${workflows_jq_selector}")"
+fi
+
 
 # Prints
 echo "repository:               $repository"
@@ -55,9 +61,9 @@ if [ "$event" == "merge_group" ]; then
   runs=$(gh run list --repo $repository -L 200 \
     --json databaseId,workflowName,createdAt,event,status,number,headBranch  \
     --jq 'map(select(.headBranch | contains("'${pr_identifier}'"))
-          | select('"${workflows_jq_selector}"')
+          '"${workflows_jq_selector}"'
           | select(.event == "'${event}'")
-          | select(.status == "in_progress" or .status == "queued")
+          | select(.status == "in_progress" or .status == "completed")
           | select(.databaseId != '"${current_run_id}"')
           | select(.createdAt < "'${current_run_created_at}'"))')
 
@@ -75,7 +81,6 @@ elif [ "$event" == "pull_request" ] || [ "$event" == "push" ]; then
 
   # Prints
   echo "ref:                      $ref"
-
   # Returns the list of runs which respect all the following conditions:
   #   - event is pull_request / push
   #   - worflow is among the ones specified
@@ -86,9 +91,9 @@ elif [ "$event" == "pull_request" ] || [ "$event" == "push" ]; then
   runs=$(gh run list --repo $repository -L 200 \
     --json databaseId,workflowName,createdAt,event,status,number,headBranch \
     --jq 'map(select(.headBranch == "'${ref}'")
-          | select('"${workflows_jq_selector}"')
+          '"${workflows_jq_selector}"'
           | select(.event == "'${event}'")
-          | select(.status == "in_progress" or .status == "queued")
+          | select(.status == "in_progress" or .status == "completed")
           | select(.databaseId != '"${current_run_id}"')
           | select(.createdAt < "'${current_run_created_at}'"))')
 fi
@@ -100,4 +105,4 @@ run_ids=$(echo $runs | jq -c '[ .[] | .databaseId ]')
 echo "runs ids for cancellation: $run_ids"
 
 # Cancels the run
-echo $run_ids | jq '.[]' | xargs -I{} bash -c "echo 'Cancelling run {}...' && gh run cancel --repo $repository {} || true"
+# echo $run_ids | jq '.[]' | xargs -I{} bash -c "echo 'Cancelling run {}...' && gh run cancel --repo $repository {} || true"
