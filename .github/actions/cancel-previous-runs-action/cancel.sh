@@ -63,7 +63,7 @@ if [ "$event" == "merge_group" ]; then
     --jq 'map(select(.headBranch | contains("'${pr_identifier}'"))
           '"${workflows_jq_selector}"'
           | select(.event == "'${event}'")
-          | select(.status == "in_progress" or .status == "completed")
+          | select(.status == "in_progress" or .status == "queued")
           | select(.databaseId != '"${current_run_id}"')
           | select(.createdAt < "'${current_run_created_at}'"))')
 
@@ -93,7 +93,7 @@ elif [ "$event" == "pull_request" ] || [ "$event" == "push" ]; then
     --jq 'map(select(.headBranch == "'${ref}'")
           '"${workflows_jq_selector}"'
           | select(.event == "'${event}'")
-          | select(.status == "in_progress" or .status == "completed")
+          | select(.status == "in_progress" or .status == "queued")
           | select(.databaseId != '"${current_run_id}"')
           | select(.createdAt < "'${current_run_created_at}'"))')
 fi
