@@ -105,4 +105,4 @@ run_ids=$(echo $runs | jq -c '[ .[] | .databaseId ]')
 echo "runs ids for cancellation: $run_ids"
 
 # Cancels the run
-# echo $run_ids | jq '.[]' | xargs -I{} bash -c "echo 'Cancelling run {}...' && gh run cancel --repo $repository {} || true"
+echo $run_ids | jq '.[]' | xargs -I{} bash -c "echo 'Cancelling run {}...' && gh run cancel --repo $repository {} || true"
