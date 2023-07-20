@@ -18,7 +18,6 @@ jobs:
   cancel-previous-runs:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
       - name: Cancel Previous Runs
         uses: pierreraffa/cancel-previous-runs-action@1.4
 
