@@ -40,7 +40,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Cancel Previous Runs
-        uses: pierreraffa/cancel-previous-runs-action@1.5
+        uses: pierreraffa/cancel-previous-runs-action@1.6
 ```
 
 Cancel previous runs from a list of workflows:  
@@ -50,7 +50,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Cancel Previous Runs
-        uses: pierreraffa/cancel-previous-runs-action@1.5
+        uses: pierreraffa/cancel-previous-runs-action@1.6
         with:
           workflow_names: Workflow1,Workflow2
 ```
